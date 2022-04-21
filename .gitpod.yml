@@ -7,5 +7,10 @@ ports:
   - port: 3000
     onOpen: open-preview
 
+github:
+  prebuilds:
+    # enable for the master/default branch (defaults to true)
+    master: true
+
 tasks:
   - init: terraform init
