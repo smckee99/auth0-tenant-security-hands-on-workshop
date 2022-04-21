@@ -24,7 +24,7 @@ In order for Terraform to be able to create Clients and APIs in Auth0 automagica
 
 Next, open the project by clicking on the button below. You can signup for a free Gitpod account using your Github account. 
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://github.com/tylernix/auth0-tenant-security-hands-on-workshop)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#/https://github.com/tylernix/auth0-tenant-security-hands-on-workshop)
 
 - Create a `local.tfvars` in the root project directory that defines the necessary Auth0 configuration values as follows:
 
