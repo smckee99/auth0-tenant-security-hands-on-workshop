@@ -14,9 +14,36 @@ To test that these Auth0 protections work, Terraform will also start a Docker co
 
 ## 🚀 Getting Started
 
-### Prerequisites
+### Using Gitpod
 
-There are a few things you will need setup on your computer before getting started:
+In order for Terraform to be able to create Clients and APIs in Auth0 automagically (yes, it's a word), you'll need to manually create an Auth0 Machine-to-Machine Application that allows Terraform to communicate with Auth0. 
+1. Navigate to your [Auth0 Dashboard](https://manage.auth0.com/dashboard) -> Applications -> Create Application.
+1. Name your new application `Terraform Auth0 Provider`. 
+1. Select `Machine To Machine Applications` and Create.
+1. Under settings, save the `domain`, `client_id`, and `client_secret` for later.
+
+Next, open the project by clicking on the button below. You can signup for a free Gitpod account using your Github account. 
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://github.com/tylernix/auth0-tenant-security-hands-on-workshop)
+
+- Create a `local.tfvars` in the root project directory that defines the necessary Auth0 configuration values as follows:
+
+```bash
+# The url of your Auth0 tenant domain (without the https://).
+auth0_domain = "YOUR_AUTH0_DOMAIN.auth0.com"
+# Your Auth0 Terraform Auth0 Provider M2M Client ID
+auth0_client_id = "YOUR_AUTH0_CLIENT_ID"
+# Your Auth0 Terraform Auth0 Provider M2M Client Secret
+auth0_client_secret = "YOUR_AUTH0_CLIENT_SECRET"
+# The password to be used when create users
+auth0_admin_user_password = "YOUR_FAVORITE_TERRIBLE_PASSWORD"
+```
+
+- Run `terraform apply -var-file="local.tfvars"`. Type `yes` and hit enter. Terraform will now take care of the hard work of creating all the resources necessary to get this demo up and running in your Auth0 tenant. Most Terraform providers are [idempotent](https://en.wikipedia.org/wiki/Idempotence), meaning running `terraform apply` doesn't have any additional effect once the infrastructure is set up.
+
+### Using local machine
+
+Using Gitpod is ideal, but if you want to use this reference implementation lcoally, there are a few things you will need setup on your computer before getting started:
 
 1. [Free Auth0 Account](https://auth0.com/signup)
 1. [Docker](https://www.docker.com/get-started). You can check that Docker is installed properly by running `docker info` in your console. 
@@ -29,8 +56,6 @@ In order for Terraform to be able to create Clients and APIs in Auth0 automagica
 1. Name your new application `Terraform Auth0 Provider`. 
 1. Select `Machine To Machine Applications` and Create.
 1. Under settings, save the `domain`, `client_id`, and `client_secret` for later.
-
-### Running locally
 
 In order for the Terraform automation to run smoothly, a few local environment files will need to be created.
 
@@ -48,12 +73,12 @@ auth0_client_secret = "YOUR_AUTH0_CLIENT_SECRET"
 auth0_admin_user_password = "YOUR_FAVORITE_TERRIBLE_PASSWORD"
 ```
 
-### Terraform
-
 Once you have your local variables set up, you can run terraform. 
 
 - First, run `terraform init` in your console inside the root of your project. This command gets your Terraform environment ready to go, installing any plugins and providers required for your configuration.
 - Run `terraform apply -var-file="local.tfvars"`. Type `yes` and hit enter. Terraform will now take care of the hard work of creating all the resources necessary to get this demo up and running in your Auth0 tenant. Most Terraform providers are [idempotent](https://en.wikipedia.org/wiki/Idempotence), meaning running `terraform apply` doesn't have any additional effect once the infrastructure is set up.
+
+### Terraform
 
 Terraform will create:
 1. One client in Auth0 called `Terraform Secure Express`, with the JWT signing algorithm set to the most secure `RS256` method.
@@ -66,7 +91,7 @@ Terraform will create:
 1. One Docker image for the `Terraform Secure Express` app.
 1. One Docker container running on **http://localhost:3000**, passing in the configuration settings from the recently created Auth0 client.
 
-### Lab
+### Hands-On Lab
 (After each step, add the configuration resource to `main.tf` and run `terraform apply -var-file="local.tfvars"`)
 
 1. Set tenant to not allow all current connections to be enabled when a new client is created. We want to be in control of this when automating apps/connections by only giving least access.
