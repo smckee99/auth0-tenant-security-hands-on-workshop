@@ -20,12 +20,12 @@ There are a few things you will need setup on your computer before getting start
 
 1. [Free Auth0 Account](https://auth0.com/signup)
 
-> **Note**: Security features that will be used in this workshop such as [Adaptive Multi-factor Authentication](https://auth0.com/docs/secure/multi-factor-authentication/adaptive-mfa) and [Breached Password Detection](https://auth0.com/docs/secure/attack-protection/breached-password-detection) will require an Auth0 [Enterprise](https://auth0.com/pricing) plan. If you sign up for a free Auth0 tenant [here](https://auth0.com/signup), you automatically get every Enterprise feature free for 22 days (everything except for custom domains).  
+> **Note**: A few Auth0 security features that will be used in this workshop such as [Adaptive Multi-factor Authentication](https://auth0.com/docs/secure/multi-factor-authentication/adaptive-mfa) and [Breached Password Detection](https://auth0.com/docs/secure/attack-protection/breached-password-detection) will require an Auth0 [Enterprise](https://auth0.com/pricing) plan. If you sign up for a free Auth0 tenant [here](https://auth0.com/signup), you automatically get every Enterprise feature free for 22 days (everything except for custom domains).  
 
 
 ### Using Gitpod
 
-The benefits of using Gitpod vs running locally is that this entire workshop can be done completely in a browser - no additional software dependencies.
+The benefits of using Gitpod vs running locally is that this entire workshop can be done completely in a browser - no additional software dependencies required.
 
 We will be running Terraform inside Gitpod to create resources. In order for Terraform to be able to create Clients and APIs in Auth0 automagically (yes, it's a word), you'll need to manually create an Auth0 Machine-to-Machine Application that allows Terraform to communicate with Auth0. 
 1. Navigate to your [Auth0 Dashboard](https://manage.auth0.com/dashboard) -> Applications -> Create Application.
@@ -34,11 +34,11 @@ We will be running Terraform inside Gitpod to create resources. In order for Ter
 1. Select `Auth0 Management API` in the dropdown, select `All` permissions, and then `Authorize`. It is not advisable to grant all permissions in a production use case, but we will allow it for testing.  
 1. Under settings, save the `domain`, `client_id`, and `client_secret` for later.
 
-Next, open the project by clicking on the button below. You can signup for a free Gitpod account using your Github account. 
+Next, open the project in Gitpod by clicking on the button below. You can signup for a free Gitpod account using your Github account. 
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#/https://github.com/tylernix/auth0-tenant-security-hands-on-workshop)
 
-- Create a `local.tfvars` in the root project directory that defines the necessary Auth0 configuration values as follows:
+Create a `local.tfvars` in the root project directory that defines the necessary Auth0 configuration values as follows:
 
 ```bash
 # The url of your Auth0 tenant domain (without the https://).
@@ -51,7 +51,7 @@ auth0_client_secret = "YOUR_AUTH0_CLIENT_SECRET"
 auth0_admin_user_password = "YOUR_FAVORITE_TERRIBLE_PASSWORD"
 ```
 
-- Run `terraform apply -var-file="local.tfvars"`. Type `yes` and hit enter. Terraform will now take care of the hard work of creating all the resources necessary to get this demo up and running in your Auth0 tenant. Most Terraform providers are [idempotent](https://en.wikipedia.org/wiki/Idempotence), meaning running `terraform apply` doesn't have any additional effect once the infrastructure is set up.
+Run `terraform apply -var-file="local.tfvars"`. Type `yes` and hit enter. Terraform will now take care of the hard work of creating all the resources necessary to get this demo up and running in your Auth0 tenant. Most Terraform providers are [idempotent](https://en.wikipedia.org/wiki/Idempotence), meaning running `terraform apply` doesn't have any additional effect once the infrastructure is set up.
 
 ### Using local machine
 
@@ -105,14 +105,14 @@ When finished with this workshop, Terraform will eventually be creating:
 
 ### Hands-On Lab
 
-> (After each step, add the configuration resource to `main.tf` and run `terraform apply -var-file="local.tfvars"`)
+> After each step, add the configuration resource to `main.tf` and run `terraform apply -var-file="local.tfvars"`
 
 1. Set tenant to not allow all current connections to be enabled when a new client is created. We want to be in control of this when automating apps/connections by only giving least access.
 1. Create client in terraform. Make sure to set jwt algorithm to RS256. Giving reasoning around why.
 1. Create connection. Enable a secure password policy and password dictionary, which does not allow passwords upon user signup that are part of the 10,000 worst passwords list + `Password1!` since it meets the requirements of good and isn’t contained in the 10,000 list. 
     - > Side note: If you want to protect user’s privacy by not collecting data you do not need, you can add user attributes to the deny list so they don’t show up in tokens/logs (name, given_name, family_name, phone_number, etc)
 1. Enable One-Time-Passcode MFA + Email. Explain what is Adaptive MFA. Explain the importance of having two MFA factors in case one gets lost/stolen/compromised. 
-    - > Bonus points: only enable phishing-resistant Multi-Factor Authentication factors. This can’t be done via terraform (yet).
+    - > Bonus points: only enable phishing-resistant Multi-Factor Authentication factors, like WebAuthn biometrics or hardware security keys. This can’t be done via terraform (yet).
 1. Enable Suspicious IP throttling attack protection. Auth0 counts and allows login and signup attempts separately. IP addresses suspended from further login attempts can still try to sign up. IP addresses suspended from further signup attempts can still try to log in.
 1. Enable brute-force attack protection.  Inspect the velocity of login attempts from an IP for a particular account and block if exceeds a max_attempt threshold. 
 1. Enable breached password detection attack protection. Blocks the login attempt if a breached password is used that appears in lists of breached passwords released on the dark web. Explain what is credential guard and how to enable it on tenant.
@@ -124,7 +124,7 @@ When finished with this workshop, Terraform will eventually be creating:
 
 After running the Terraform commands, go to [http://localhost:3000](http://localhost:3000) to see the running application. In Gitpod, this will require you to go to the `Remote Explorer` extension (🖥)on the left sidebar, and click the `Open Browser` option (🌐). 
 
-1. Confirm you can’t sign up with an account `test@example.com` using the password `Password1!`, since this is one of the passwords we told the Auth0 connection password dictionary to not allow.
+1. Confirm you can’t sign up with an account `test@example.com` using the password `Password1!`, since this is one of the passwords we told the Auth0 connection dictionary to not allow as a password.
 1. Confirm `leak-test@example.com` email + `Paaf213XXYYZZ` password shows breached password error upon login. This password is intentionally put here, since it is already exposed in a data breach. This is the same password example used in the [Breached Password Detection](https://auth0.com/docs/secure/attack-protection/breached-password-detection#verify-detection-configuration) documentation.
 1. Confirm `bruteforce-test@exmaple.com email` + any 3 random passwords shows suspicious login activity error. Account needs to be unblocked manually from the dashboard. 
 1. Confirm 2 more random email+password combinations show suspicious IP activity error.
