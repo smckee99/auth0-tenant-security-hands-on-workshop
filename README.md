@@ -14,12 +14,24 @@ To test that these Auth0 protections work, Terraform will also start a Docker co
 
 ## 🚀 Getting Started
 
+### Prerequisites
+
+There are a few things you will need setup on your computer before getting started:
+
+1. [Free Auth0 Account](https://auth0.com/signup)
+
+> **Note**: Security features that will be used in this workshop such as [Adaptive Multi-factor Authentication](https://auth0.com/docs/secure/multi-factor-authentication/adaptive-mfa) and [Breached Password Detection](https://auth0.com/docs/secure/attack-protection/breached-password-detection) will require an Auth0 [Enterprise](https://auth0.com/pricing) plan. If you sign up for a free Auth0 tenant [here](https://auth0.com/signup), you automatically get every Enterprise feature free for 22 days (everything except for custom domains).  
+
+
 ### Using Gitpod
 
-In order for Terraform to be able to create Clients and APIs in Auth0 automagically (yes, it's a word), you'll need to manually create an Auth0 Machine-to-Machine Application that allows Terraform to communicate with Auth0. 
+The benefits of using Gitpod vs running locally is that this entire workshop can be done completely in a browser - no additional software dependencies.
+
+We will be running Terraform inside Gitpod to create resources. In order for Terraform to be able to create Clients and APIs in Auth0 automagically (yes, it's a word), you'll need to manually create an Auth0 Machine-to-Machine Application that allows Terraform to communicate with Auth0. 
 1. Navigate to your [Auth0 Dashboard](https://manage.auth0.com/dashboard) -> Applications -> Create Application.
 1. Name your new application `Terraform Auth0 Provider`. 
 1. Select `Machine To Machine Applications` and Create.
+1. Select `Auth0 Management API` in the dropdown, select `All` permissions, and then `Authorize`. It is not advisable to grant all permissions in a production use case, but we will allow it for testing.  
 1. Under settings, save the `domain`, `client_id`, and `client_secret` for later.
 
 Next, open the project by clicking on the button below. You can signup for a free Gitpod account using your Github account. 
@@ -35,7 +47,7 @@ auth0_domain = "YOUR_AUTH0_DOMAIN.auth0.com"
 auth0_client_id = "YOUR_AUTH0_CLIENT_ID"
 # Your Auth0 Terraform Auth0 Provider M2M Client Secret
 auth0_client_secret = "YOUR_AUTH0_CLIENT_SECRET"
-# The password to be used when create users
+# The password to be used when automatically creating users from terraform
 auth0_admin_user_password = "YOUR_FAVORITE_TERRIBLE_PASSWORD"
 ```
 
@@ -43,7 +55,7 @@ auth0_admin_user_password = "YOUR_FAVORITE_TERRIBLE_PASSWORD"
 
 ### Using local machine
 
-Using Gitpod is ideal, but if you want to use this reference implementation lcoally, there are a few things you will need setup on your computer before getting started:
+Using Gitpod is ideal, but if you want to run this reference implementation locally, there are a few things you will need setup on your computer before getting started:
 
 1. [Free Auth0 Account](https://auth0.com/signup)
 1. [Docker](https://www.docker.com/get-started). You can check that Docker is installed properly by running `docker info` in your console. 
@@ -80,19 +92,20 @@ Once you have your local variables set up, you can run terraform.
 
 ### Terraform
 
-Terraform will create:
+When finished with this workshop, Terraform will eventually be creating:
 1. One client in Auth0 called `Terraform Secure Express`, with the JWT signing algorithm set to the most secure `RS256` method.
 1. A database in Auth0 to store users called `terraform-express-user-db`, disallowing the [10,000 most commonly used passwords](https://auth0.com/docs/authenticate/database-connections/password-options#password-dictionary) and [adding user attributes to the deny list](https://auth0.com/docs/secure/security-guidance/data-security/denylist) if data privacy is a concern.
 1. Configure the Auth0 tenant to disallow all current connections from being enabled on a new client when a new client is created.
 1. Three users in Auth0 called `admin@example.com`, `bruteforce-test@example.com`, `leak-test@example.com`.
 1. Enable [Adaptive Multi-factor Authentication](https://auth0.com/docs/secure/multi-factor-authentication/adaptive-mfa) with `Email` and `One Time Passcode (OTP)` as allowed MFA factors.
 1. An API resource server in Auth0 called `Terraform Auth0 Resource Server`.
-1. Configure `Suspicious IP Throttling`, `Brute Force Protection`, and `Breached Password Detection`. 
+1. Configure [Suspicious IP Throttling](https://auth0.com/docs/secure/attack-protection/suspicious-ip-throttling), [Brute Force Protection](https://auth0.com/docs/secure/attack-protection/brute-force-protection), and [Breached Password Detection](https://auth0.com/docs/secure/attack-protection/breached-password-detection). 
 1. One Docker image for the `Terraform Secure Express` app.
 1. One Docker container running on **http://localhost:3000**, passing in the configuration settings from the recently created Auth0 client.
 
 ### Hands-On Lab
-(After each step, add the configuration resource to `main.tf` and run `terraform apply -var-file="local.tfvars"`)
+
+> (After each step, add the configuration resource to `main.tf` and run `terraform apply -var-file="local.tfvars"`)
 
 1. Set tenant to not allow all current connections to be enabled when a new client is created. We want to be in control of this when automating apps/connections by only giving least access.
 1. Create client in terraform. Make sure to set jwt algorithm to RS256. Giving reasoning around why.
@@ -109,9 +122,9 @@ Terraform will create:
 
 ### Testing
 
-After running these commands, go to [http://localhost:3000](http://localhost:3000) to see the running application.
+After running the Terraform commands, go to [http://localhost:3000](http://localhost:3000) to see the running application. In Gitpod, this will require you to go to the `Remote Explorer` extension (🖥)on the left sidebar, and click the `Open Browser` option (🌐). 
 
-1. Confirm you can’t sign up with an account `test@example.com` using the password `Password1!`  
+1. Confirm you can’t sign up with an account `test@example.com` using the password `Password1!`, since this is one of the passwords we told the Auth0 connection password dictionary to not allow.
 1. Confirm `leak-test@example.com` email + `Paaf213XXYYZZ` password shows breached password error upon login. This password is intentionally put here, since it is already exposed in a data breach. This is the same password example used in the [Breached Password Detection](https://auth0.com/docs/secure/attack-protection/breached-password-detection#verify-detection-configuration) documentation.
 1. Confirm `bruteforce-test@exmaple.com email` + any 3 random passwords shows suspicious login activity error. Account needs to be unblocked manually from the dashboard. 
 1. Confirm 2 more random email+password combinations show suspicious IP activity error.
@@ -128,5 +141,5 @@ When you are done with the demo, you can run `terraform destroy -var-file="local
 - [ ] Update documentation into a tutorial to include an initial terraform file with basic configuration, then slowly add terraform resources by following a tutorial, till the final terraform file is achieved. Basically split the terraform script into chunks so that teaching can be interspersed with adding terraform configurations.
 - [ ] Set up [Auth0 tenant log streaming](https://registry.terraform.io/providers/auth0/auth0/latest/docs/resources/log_stream) via Terraform to a data provider in order to analyze the logs and create various [incident response scenarios](https://auth0.com/docs/secure/security-guidance/incident-response-using-logs)
 - [ ] Finish documentation for Testing section to include instructions on how to test MFA and tenant log stream + incident response.
-- [ ] Figure out how this lab could be run on a remote machine (something like [Github codespaces](https://github.com/features/codespaces) or [Codesandbox](https://codesandbox.io/)) to make it easy for workshop attendees to to get started without having to download anything locally to their machine. 
+- [x] Figure out how this lab could be run on a remote machine (something like [Github codespaces](https://github.com/features/codespaces))to make it easy for workshop attendees to to get started without having to download anything locally to their machine. DONE: Workshop is using [Gitpod](https://www.gitpod.io/docs) for now. View `.gitpod.yml`, `.gitpod.Dockerfile`, and `.gitpod.bashrc` for more information. Feel free to change this if another alternative is found. 
 - [ ] This tutorial only focuses on Auth0 tenant security configurations. Another deep-dive into app level security such as [Preventing CSRF attacks by using the state parameter](https://auth0.com/docs/secure/attack-protection/state-parameters) or properly storing user data between [Auth0 data store and external database](https://auth0.com/docs/secure/security-guidance/data-security/user-data-storage#external-database-vs-auth0-data-store) or talking about [token best practices](https://auth0.com/docs/secure/tokens/token-best-practices) or [properly storing tokens](https://auth0.com/docs/secure/security-guidance/data-security/token-storage) (this can get complicated since it varies based on public vs confidential clients)
