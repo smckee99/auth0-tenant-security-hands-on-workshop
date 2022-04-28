@@ -28,7 +28,7 @@ There are a few things you will need setup on your computer before getting start
 The benefits of using Gitpod vs running locally is that this entire workshop can be done completely in a browser - no additional software dependencies required.
 
 We will be running Terraform inside Gitpod to create resources. In order for Terraform to be able to create Clients and APIs in Auth0 automagically (yes, it's a word), you'll need to manually create an Auth0 Machine-to-Machine Application that allows Terraform to communicate with Auth0. 
-1. Navigate to your <a href="https://manage.auth0.com/dashboard" target="_blank">Auth0 Dashboard</a> -> Applications -> Create Application.
+1. Navigate to your <a href="https://manage.auth0.com/dashboard" target="_blank">Auth0 dashboard</a> -> Applications -> Create Application.
 1. Name your new application `Terraform Auth0 Provider`. 
 1. Select `Machine To Machine Applications` and Create.
 1. Select `Auth0 Management API` in the dropdown, select `All` permissions, and then `Authorize`. It is not advisable to grant all permissions in a production use case, but we will allow it for testing.  
