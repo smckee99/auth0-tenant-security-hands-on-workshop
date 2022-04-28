@@ -34,9 +34,9 @@ We will be running Terraform inside Gitpod to create resources. In order for Ter
 1. Select `Auth0 Management API` in the dropdown, select `All` permissions, and then `Authorize`. It is not advisable to grant all permissions in a production use case, but we will allow it for testing.  
 1. Under settings, save the `domain`, `client_id`, and `client_secret` for later.
 
-Next, open the project in Gitpod by clicking on the button below. You can signup for a free Gitpod account using your Github account. 
+Next, open the project in Gitpod by clicking on the button below (or right-clicking and opening in a new tab). You can signup for a free Gitpod account using your Github account. 
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#/https://github.com/tylernix/auth0-tenant-security-hands-on-workshop)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#/https://github.com/stressboi/auth0-tenant-security-hands-on-workshop)
 
 Create a `local.tfvars` in the root project directory that defines the necessary Auth0 configuration values as follows:
 
