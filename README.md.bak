@@ -36,7 +36,7 @@ We will be running Terraform inside Gitpod to create resources. In order for Ter
 
 Next, open the project in Gitpod by clicking on the button below (or right-clicking and opening in a new tab). You can signup for a free Gitpod account using your Github account. 
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#/https://github.com/tylernix/auth0-tenant-security-hands-on-workshop)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#/https://github.com/stressboi/auth0-tenant-security-hands-on-workshop)
 
 Create a `local.tfvars` in the root project directory that defines the necessary Auth0 configuration values as follows:
 
@@ -48,7 +48,7 @@ auth0_client_id = "YOUR_AUTH0_CLIENT_ID"
 # Your Auth0 Terraform Auth0 Provider M2M Client Secret
 auth0_client_secret = "YOUR_AUTH0_CLIENT_SECRET"
 # The password to be used when automatically creating users from terraform
-auth0_admin_user_password = "YOUR_FAVORITE_TERRIBLE_PASSWORD"
+auth0_admin_user_password = "YOUR_FAVORITE_TERRIBLE_PASSWORD_THAT_INCLUDES_A_NUMBER_AND_SPECIAL_CHARACTER"
 ```
 
 Run `terraform apply -var-file="local.tfvars"`. Type `yes` and hit enter. Terraform will now take care of the hard work of creating all the resources necessary to get this demo up and running in your Auth0 tenant. Most Terraform providers are [idempotent](https://en.wikipedia.org/wiki/Idempotence), meaning running `terraform apply` doesn't have any additional effect once the infrastructure is set up.
