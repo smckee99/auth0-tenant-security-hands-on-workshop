@@ -72,17 +72,18 @@ In order for Terraform to be able to create Clients and APIs in Auth0 automagica
 In order for the Terraform automation to run smoothly, a few local environment files will need to be created.
 
 - First, clone https://github.com/stressboi/auth0-tenant-security-hands-on-workshop.git.
-- Create a `local.tfvars` in your root project directory that defines the necessary Auth0 configuration values as follows:
+- Create a `local.tfvars` in your root project directory that defines the necessary Auth0 configuration values as follows.  Make sure you copy them (the domain, especially) from the "Basic Information" under Settings within the Terraform Auth0 Provider application you created above!
 
 ```bash
-# The url of your Auth0 tenant domain (without the https://).
+# The url of your Auth0 tenant domain (without the https://). May include a geography, e.g. "us"
 auth0_domain = "YOUR_AUTH0_DOMAIN.auth0.com"
 # Your Auth0 Terraform Auth0 Provider M2M Client ID
 auth0_client_id = "YOUR_AUTH0_CLIENT_ID"
 # Your Auth0 Terraform Auth0 Provider M2M Client Secret
 auth0_client_secret = "YOUR_AUTH0_CLIENT_SECRET"
-# The password to be used when create users
-auth0_admin_user_password = "YOUR_FAVORITE_TERRIBLE_PASSWORD"
+# The password to be used when automatically creating users from terraform
+auth0_admin_user_password = "YOUR_FAVORITE_TERRIBLE_PASSWORD_THAT_INCLUDES_A_NUMBER_AND_SPECIAL_CHARACTER"
+```
 ```
 
 Once you have your local variables set up, you can run terraform. 
