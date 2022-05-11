@@ -21,6 +21,7 @@ There are a few things you will need setup on your computer before getting start
 1. [Free Auth0 Account](https://auth0.com/signup)
 
 > **Note**: A few Auth0 security features that will be used in this workshop such as [Adaptive Multi-factor Authentication](https://auth0.com/docs/secure/multi-factor-authentication/adaptive-mfa) and [Breached Password Detection](https://auth0.com/docs/secure/attack-protection/breached-password-detection) will require an Auth0 [Enterprise](https://auth0.com/pricing) plan. If you sign up for a free Auth0 tenant [here](https://auth0.com/signup), you automatically get every Enterprise feature free for 22 days (everything except for custom domains).  
+> **Visualization**: Remember that you can visit explorer.auth0.com and/or flows.auth0.com to see the relationships present in your Auth0 tenant!
 
 
 ### Using Gitpod
