@@ -86,7 +86,7 @@ auth0_client_secret = "YOUR_AUTH0_CLIENT_SECRET"
 # The password to be used when automatically creating users from terraform
 auth0_admin_user_password = "YOUR_FAVORITE_TERRIBLE_PASSWORD_THAT_INCLUDES_A_NUMBER_AND_SPECIAL_CHARACTER"
 ```
-```
+
 
 Once you have your local variables set up, you can run terraform. 
 
