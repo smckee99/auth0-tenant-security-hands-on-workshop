@@ -38,7 +38,7 @@ We will be running Terraform inside Gitpod to create resources. In order for Ter
 
 Next, open the project in Gitpod by clicking on the button below (or right-clicking and opening in a new tab). You can signup for a free Gitpod account using your Github account. This may take a few minutes if you have forked or cloned the repo!
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#/https://github.com/stressboi/auth0-tenant-security-hands-on-workshop)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#/https://github.com/srmckee99/auth0-tenant-security-hands-on-workshop)
 
 Create a `local.tfvars` (click the New File icon) in the root project directory structure that defines the necessary Auth0 configuration values as follows. Make sure you copy them (the domain, especially) from the "Basic Information" under Settings within the Terraform Auth0 Provider application you created above!
 
