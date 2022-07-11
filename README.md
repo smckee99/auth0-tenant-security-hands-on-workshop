@@ -42,6 +42,10 @@ Next, open the project in Gitpod by clicking on the button below (or right-click
 
 Create a `local.tfvars` (click the New File icon) in the root project directory structure that defines the necessary Auth0 configuration values as follows. Make sure you copy them (the domain, especially) from the "Basic Information" under Settings within the Terraform Auth0 Provider application you created above!
 
+If using gitpod, the URL of your application is generated dynamically and not static. To find your url, type `env | grep GITPOD_WORKSPACE_URL`. Copy the results into your `local.tfvars`, but append `3000-` to the beginning of the url. 
+
+Example : `https://**3000**-johndoe-auth0tenantsec-3fuibm1emas.ws-us53.gitpod.io/`
+
 ```bash
 # The url of your Auth0 tenant domain (without the https://). May include a geography, e.g. "us"
 auth0_domain = "YOUR_AUTH0_DOMAIN.auth0.com"
@@ -51,6 +55,8 @@ auth0_client_id = "YOUR_AUTH0_CLIENT_ID"
 auth0_client_secret = "YOUR_AUTH0_CLIENT_SECRET"
 # The password to be used when automatically creating users from terraform
 auth0_admin_user_password = "YOUR_FAVORITE_TERRIBLE_PASSWORD_THAT_INCLUDES_A_NUMBER_AND_SPECIAL_CHARACTER"
+# The url of your application (http://localhost:3000 if running locally)
+auth0_domain_name = "YOUR_DOMAIN_HERE"
 ```
 
 In the web-based Terminal (bottom right of browser) run `terraform apply -var-file="local.tfvars"`. Type `yes` and hit enter. Terraform will now take care of the hard work of creating all the resources necessary to get this demo up and running in your Auth0 tenant. Most Terraform providers are [idempotent](https://en.wikipedia.org/wiki/Idempotence), meaning running `terraform apply` doesn't have any additional effect once the infrastructure is set up.

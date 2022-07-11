@@ -2,6 +2,7 @@ variable "auth0_domain" {}
 variable "auth0_client_id" {}
 variable "auth0_client_secret" {}
 variable "auth0_admin_user_password" {}
+variable "auth0_domain_name" {}
 variable "terraform-express-api-identifier" {
   type    = string
   default = "https://terraform-express-resource-server"
@@ -99,8 +100,8 @@ resource "auth0_client" "terraform-secure-express" {
   name                = "Terraform Secure Express"
   description         = "App for running Dockerized Express application via Terraform"
   app_type            = "regular_web"
-  callbacks           = ["http://localhost:3000/callback"]
-  allowed_logout_urls = ["http://localhost:3000"]
+  callbacks           = [format("%s/%s",var.auth0_domain_name,"callback")]
+  allowed_logout_urls = [var.auth0_domain_name]
   oidc_conformant     = true
   is_first_party      = true
 
