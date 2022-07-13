@@ -2,6 +2,8 @@ variable "auth0_domain" {}
 variable "auth0_client_id" {}
 variable "auth0_client_secret" {}
 variable "auth0_admin_user_password" {}
+variable "auth0_application_callback" {}
+
 variable "terraform-express-api-identifier" {
   type    = string
   default = "https://terraform-express-resource-server"
@@ -49,7 +51,8 @@ resource "docker_container" "terraform-secure-express" {
     "AUTH0_CLIENT_ID=${auth0_client.terraform-secure-express.client_id}",
     "AUTH0_CLIENT_SECRET=${auth0_client.terraform-secure-express.client_secret}",
     "AUTH0_CLIENT_DOMAIN=${var.auth0_domain}",
-    "AUTH0_API_IDENTIFIER=${var.terraform-express-api-identifier}"
+    "AUTH0_API_IDENTIFIER=${var.terraform-express-api-identifier}",
+    "AUTH0_CALLBACK_URL=${var.auth0_application_callback}"
   ]
 }
 
@@ -99,8 +102,8 @@ resource "auth0_client" "terraform-secure-express" {
   name                = "Terraform Secure Express"
   description         = "App for running Dockerized Express application via Terraform"
   app_type            = "regular_web"
-  callbacks           = ["http://localhost:3000/callback"]
-  allowed_logout_urls = ["http://localhost:3000"]
+  callbacks           = [FILL]
+  allowed_logout_urls = [var.auth0_application_callback]
   oidc_conformant     = true
   is_first_party      = true
 
