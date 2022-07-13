@@ -71,7 +71,7 @@ resource "auth0_tenant" "tenant" {
 
 resource "auth0_attack_protection" "attack_protection" {
   suspicious_ip_throttling {
-    enabled   = true
+    enabled   = false
     shields   = ["admin_notification", "block"]
     // allowlist = ["192.168.1.1"]
     pre_login {
@@ -85,14 +85,14 @@ resource "auth0_attack_protection" "attack_protection" {
   }
   brute_force_protection { // safeguards against a single IP address attacking a single user account.
     allowlist    = ["127.0.0.1"]
-    enabled      = true
+    enabled      = false
     max_attempts = 2
     mode         = "count_per_identifier_and_ip"
     shields      = ["block", "user_notification"]
   }
   breached_password_detection {
     admin_notification_frequency = ["immediately"]
-    enabled                      = true
+    enabled                      = false
     method                       = "standard"
     shields                      = ["admin_notification", "block"]
   }
