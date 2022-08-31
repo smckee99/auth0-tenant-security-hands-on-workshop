@@ -44,7 +44,7 @@ Create a `local.tfvars` (click the New File icon) in the root project directory 
 
 If using gitpod, the URL of your application is generated dynamically and not static. To find your url, type `env | grep GITPOD_WORKSPACE_URL`. Copy the results into your `local.tfvars`, but append `3000-` to the beginning of the url. 
 
-Example : `https://**3000**-johndoe-auth0tenantsec-3fuibm1emas.ws-us53.gitpod.io/`
+Example : `https://3000-johndoe-auth0tenantsec-3fuibm1emas.ws-us53.gitpod.io/`
 
 ```bash
 # The url of your Auth0 tenant domain (without the https://). May include a geography, e.g. "us"

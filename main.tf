@@ -141,7 +141,8 @@ resource "auth0_user" "terraform-express-brute-force-user" {
   connection_name = auth0_connection.terraform-express-user-db.name
   email           = "bruteforce-test@example.com"
   email_verified  = true
-  password        = var.auth0_admin_user_password
+  password        = "P@ssword1"
+  roles           = [auth0_role.terraform-express-basic-user-role.id]
 }
 
 resource "auth0_user" "terraform-express-breached-password-user" {
@@ -149,6 +150,49 @@ resource "auth0_user" "terraform-express-breached-password-user" {
   email           = "leak-test@example.com"
   email_verified  = true
   password        = var.auth0_breached_password
+  roles           = [auth0_role.terraform-express-basic-user-role.id]
+}
+
+resource "auth0_user" "terraform-express-brute-force-mitigation" {
+  connection_name = auth0_connection.terraform-express-user-db.name
+  email           = "james.bond@example.com"
+  email_verified  = true
+  password        = "Qw3rty213"
+}
+
+resource "auth0_user" "terraform-express-password-spray-mitigation1" {
+  connection_name = auth0_connection.terraform-express-user-db.name
+  email           = "michael.jordan@example.com"
+  email_verified  = true
+  password        = "randomPass12"
+}
+
+resource "auth0_user" "terraform-express-password-spray-mitigation2" {
+  connection_name = auth0_connection.terraform-express-user-db.name
+  email           = "george.washington@example.com"
+  email_verified  = true
+  password        = "pres1789!"
+}
+
+resource "auth0_user" "terraform-express-password-spray-mitigation3" {
+  connection_name = auth0_connection.terraform-express-user-db.name
+  email           = "nelly.korda@example.com"
+  email_verified  = true
+  password        = "r@ndomPass71"
+}
+
+resource "auth0_user" "terraform-express-password-spray-mitigation4" {
+  connection_name = auth0_connection.terraform-express-user-db.name
+  email           = "super.mario@example.com"
+  email_verified  = true
+  password        = "qw3rtY94"
+}
+
+resource "auth0_user" "terraform-express-stolen-account" {
+  connection_name = auth0_connection.terraform-express-user-db.name
+  email           = "stolen-account@example.com"
+  email_verified  = true
+  password        = "l3tMeIn!"
 }
 
 resource "auth0_guardian" "default" {
